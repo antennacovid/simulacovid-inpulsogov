@@ -1,12 +1,21 @@
-notebooks/
-
+# Draft notebooks
+analysis/test*
 .ipynb_checkpoints/
+
+# Store files
 */.DS_Store
 *.pyc
+.vscode/
+
+# Virtual env
 covid_env/
 venvanalysis/
 .DS_Store
 venv/
-src/configs/gcloud_credentials.json
-src/cities_static.csv
 .venv/
+
+# Credentials
+src/configs/gcloud_credentials.json
+
+# Raw data
+src/cities_static.csv
