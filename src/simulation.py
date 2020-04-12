@@ -32,20 +32,26 @@ def choose_place(city, region, state):
     return city
 
 def simulator_menu(user_input):
-        st.sidebar.subheader("""Simule o impacto de estratégias de isolamento em sua cidade:""")
+        st.write("""
+        <div class="lightgrey-bg"><div class="base-wrapper"><span class="chart-simulator-instructions subsection-header">
+                Simule o impacto de estratégias de isolamento em sua cidade
+        </span></div></div>
+        """, unsafe_allow_html=True)
 
-        user_input['strategy']['isolation'] = st.sidebar.number_input('Em quantos dias você quer acionar a Estratégia 2, medidas restritivas?', 0, 90, 90, key='strategy2')
+        user_input['strategy']['isolation'] = st.number_input('Em quantos dias você quer acionar a Estratégia 2, medidas restritivas?', 0, 90, 90, key='strategy2')
+        user_input['strategy']['lockdown'] = st.number_input('Em quantos dias você quer acionar a Estratégia 3, quarentena?', 0, 90, 90, key='strategy3')  
 
-
-        user_input['strategy']['lockdown'] = st.sidebar.number_input('Em quantos dias você quer acionar a Estratégia 3, quarentena?', 0, 90, 90, key='strategy3')
-        
-        st.sidebar.subheader("""Ajuste a capacidade que será alocada na intervenção:""")
+        st.write("""
+        <div class="lightgrey-bg"><div class="base-wrapper"><span class="chart-simulator-instructions subsection-header">
+                Ajuste a capacidade que será alocada na intervenção
+        </span></div></div>
+        """, unsafe_allow_html=True)
 
         total_beds = user_input['n_beds']
-        user_input['n_beds'] = st.sidebar.number_input('Mude o número de leitos destinados aos pacientes com Covid-19:', 0, None, total_beds)
+        user_input['n_beds'] = st.number_input('Mude o número de leitos destinados aos pacientes com Covid-19:', 0, None, total_beds)
 
         total_ventilators = user_input['n_ventilators']
-        user_input['n_ventilators'] = st.sidebar.number_input('Mude o número de ventiladores destinados aos pacientes com Covid-19:', 0, None, total_ventilators)
+        user_input['n_ventilators'] = st.number_input('Mude o número de ventiladores destinados aos pacientes com Covid-19:', 0, None, total_ventilators)
         
         return user_input
 
@@ -112,6 +118,7 @@ def main():
         user_input['strategy'] = {'isolation': 90, 'lockdown': 90}
         user_input['population_params']['I'] = [user_input['population_params']['I'] if user_input['population_params']['I'] != 0 else 1][0]
 
+        
         _, dday_beds, dday_ventilators = simulator.run_evolution(user_input, config)
         
         worst_case = SimulatorOutput(color=BackgroundColor.GREY_GRADIENT,
@@ -135,7 +142,17 @@ def main():
         
         utils.genStrategiesSection(Strategies)
 
-        # SIMULATOR MENU
+        # SIMULATOR SECTION
+        # ====> Add title here from genChartSimulationSection
+        st.write("""
+        <div class="lightgrey-bg">
+                <div class="base-wrapper">
+                        <span class="section-header primary-span">Simulador de demanda hospitalar
+                        </span>
+                </div>
+        </div>
+        """, unsafe_allow_html=True)
+        
         user_input = simulator_menu(user_input)
 
         # SIMULATOR SCENARIOS: BEDS & RESPIRATORS
@@ -161,7 +178,7 @@ def main():
                         </div>
                 </div>''',  unsafe_allow_html=True)
 
-        st.plotly_chart(fig)
+        st.write(fig)
         
         utils.genWhatsappButton()
         utils.genFooter()
